@@ -1,0 +1,91 @@
+<div>
+
+
+    <div class="container" ng-show="error1==4" style="padding-top: 97px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group" style="padding-bottom: 50px">
+                    <label style="color: red;font-size: 30px;font-family:Avenir-Book;">{{error_message}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" ng-show="set">
+        <div class="row" style="padding-top:97px ">
+            <div class="col-md-12">
+                <p style="font-size: 48px;font-family: Avenir-Medium">Auction Form</p>
+                <p style="font-size: 20px;font-family: Avenir-Light">Please fill the form to see the results</p>
+            </div>
+        </div>
+        <div class="row" style="padding:100px 0">
+            <div class="col-md-8 col-md-offset-2">
+                <form role="form" ng-submit="submitForm();" style="font-size: 20px">
+                    <div class="form-group" ng-repeat="item in AForm" style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">{{item.title}}<span ng-if="item.required==true">* </span><span ng-if="item.required==false"></span><span ng-if="item.forSp==true"> (To be filled by Service Provider)</span></label>
+
+                        <input ng-if="item.type==0  || item.type==6" ng-disabled="item.forCp==false" type="text"  placeholder="Enter {{item.title}}" class="form-control input-lg rounded" ng-model="formValues[$index]" ng-focus="error[$index]=false" style="height: 60px;background-color: white">
+
+                        <div ng-if="item.type==1" ng-repeat="box in item.value" ng-init="formValues[$parent.$parent.$index]=[];">
+                            <div class="checkbox">
+                                <label style="font-size: 20px;font-family: Avenir-light;"><input type="checkbox"  ng-disabled="item.forCp==false"   ng-click="toggleCheckbox($parent.$parent.$index,box)"  ng-focus="error[$parent.$parent.$index]=false" style="background-color: white"> {{box}}</label>
+                            </div>
+                        </div>
+
+                        <div ng-if="item.type==2" ng-repeat="radio in item.value">
+                            <label style="font-size: 20px;font-family: Avenir-light;"><input type="radio" ng-disabled="item.forCp==false" ng-model="formValues[$parent.$parent.$index]"  ng-value="radio" ng-focus="error[$parent.$parent.$index]=false" style="background-color: white"> {{radio}}</label>
+                        </div>
+
+                        <select ng-if="item.type==3" class="form-control input-lg rounded"  ng-model="formValues[$index]" placeholder="Enter {{item.title}}"  ng-focus="error[$index]=false"  style="height: 60px" ng-disabled="item.forCp==false">
+                            <option ng-repeat="listvalue in item.value" ng-value="listvalue">{{listvalue}}</option>
+                        </select>
+
+                        <div ng-if="item.type==4" ng-init="sliderInitialise($index);">
+                            <ionslider ng-attr-id="{{$index}}" min="item.value[0]" max="item.value[1]" from="formValues[$index][0]" to="formValues[$index][1]" type="'double'" from-fixed="item.forSp" to-fixed="item.forSp" on-change="sliderChange"></ionslider>
+                        </div>
+
+
+
+
+
+
+
+
+                        <div class="row" ng-if="item.type==5" ng-init="formValues[$index]=[];formValues[$index][0]= '';formValues[$index][1]= ''  ;">
+                            <div class="col-md-6">
+                                <input type="text"  class="form-control input-lg date rounded" ng-disabled="item.forCp==false" ng-model="formValues[$index][0]"  placeholder="Date"   ng-focus="error[$index]=false"  style="height: 60px;background-color: white">
+                            </div>
+                            <div class="col-md-6 time">
+                                <input type="text" class="form-control input-lg rounded" ng-disabled="item.forCp==false" ng-model="formValues[$index][1]" placeholder="Time" ng-focus="error[$index]=false"  style="height: 60px;background-color: white">
+                            </div>
+
+                        </div>
+
+                        <input ng-if="item.type==7 || item.type==8"  ng-disabled="item.forCp==false"  type="text" placeholder="Enter {{item.title}}" class="form-control input-lg rounded" ng-model="formValues[$index]"  ng-change="error[$index]=false" ng-focus="error[$index]=false"  style="height: 60px;background-color: white">
+
+                        <div class="form-group" ng-show="error[$index]" style="padding-top: 20px">
+                            <label style="color: red;font-size: 15px;font-family: Avenir-Book">{{error_message[$index]}}</label>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group" ng-show="error1" style="padding-bottom: 50px">
+                        <label style="color: red;font-size: 15px;font-family:Avenir-Book;">{{error_message}}</label>
+                    </div>
+                    <div class="form-group" ng-show="ongoing" style="padding-bottom: 50px">
+                        <label style="color: #808080;font-size: 30px;font-family:Avenir-Book;" ng-show="success" >Success</label><br>
+                        <img ng-src="assets/spinner.gif" height="170px" width="170px"  >
+                    </div>
+
+                    <button type="submit" class="btn btn-primary rounded" style="width:200px;height:50px;font-family: Avenir-Light" ng-disabled="success">Submit</button>
+
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+</div>

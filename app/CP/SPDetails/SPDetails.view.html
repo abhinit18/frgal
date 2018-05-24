@@ -1,0 +1,108 @@
+<div>
+
+
+    <div class="container" ng-show="error==4" style="padding-top: 97px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group" style="padding-bottom: 50px">
+                    <label style="color: red;font-size: 30px;font-family:Avenir-Book;">{{error_message}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container" ng-show="set">
+        <div class="row" style="padding-top: 97px">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-4 direction-column-row-center-column-between" style="width:260px;height: 260px">
+
+                        <img src="assets/default.png" height="260px" width="260px"  class="img-rounded" ng-show="imageLoaded==0">
+                        <img ng-src="{{spImage}}" height="260px" width="260px"  class="img-rounded" imageonload="imageLoaded=1;" ng-show="imageLoaded==1">
+
+
+                    </div>
+                    <div class="col-md-8" style="padding-left:15px;padding-right: 35px">
+                        <div class="row">
+                            <div class="col-md-12" style="font-size: 36px">
+                                {{spdetails.firstName}} {{spdetails.lastName}}
+                            </div>
+
+                        </div>
+                        <div class="row" style="padding-top: 20px">
+                            <div class="col-md-12" style="font-size: 30px">
+                                <i class="fa fa-star" ng-repeat="x in spdetails.full" style="padding-right: 2px"></i>
+                                <i class="fa fa-star-half-o" ng-repeat="x in spdetails.half" style="padding-right: 2px"></i>
+                                <i class="fa fa-star-o" ng-repeat="x in spdetails.empty" style="padding-right: 2px"></i>
+                                <span>({{spdetails.noOfRatings}})</span>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-4 direction-column-row-center-column-between" style="height: 150px" ng-show="ancestor=='fromList'">
+                <button type="button" class="btn btn-primary btn-block rounded"  style="width:300px;height:50px;font-family:Avenir-Light;" ng-click="addSP(spdetails._id);">Request For Proposal</button>
+
+                <button type="button" class="btn btn-primary btn-block rounded"  style="width:300px;height:50px;font-family:Avenir-Light;" ng-click="addSP(spdetails._id);">Invite To Auction</button>
+            </div>
+        </div>
+
+
+        <div class="row" style="padding-top: 50px">
+            <div class="col-md-12 direction-row-row-center-column-between" style="height: 70px;background-color:#E1E1E1;font-size: 30px;font-family: Avenir-Medium">
+                <div>Personal Details</div>
+            </div>
+        </div>
+
+        <div class="row" style="padding-top: 40px">
+            <div class="col-md-2" style="font-size: 20px;font-family: Avenir-Book">Name</div>
+            <div class="col-md-10" style="font-size: 20px;font-family: Avenir-Light">{{spdetails.firstName}} {{spdetails.lastName}}</div>
+        </div>
+
+        <div class="row" style="padding-top: 20px">
+            <div class="col-md-2" style="font-size: 20px;font-family: Avenir-Book">Email</div>
+            <div class="col-md-10" style="font-size: 20px;font-family: Avenir-Light">{{spdetails.email}}</div>
+        </div>
+
+        <div class="row" style="padding-top: 20px">
+            <div class="col-md-2" style="font-size: 20px;font-family: Avenir-Book">Contact</div>
+            <div class="col-md-10" style="font-size: 20px;font-family: Avenir-Light">{{spdetails.phoneNumberPrefix}}-{{spdetails.phoneNumber.substring(2)}}</div>
+        </div>
+
+        <div class="row" style="padding-top: 50px">
+            <div class="col-md-12 direction-row-row-center-column-between" style="height: 70px;background-color:#E1E1E1;font-size: 30px;font-family: Avenir-Medium">
+                <div>Latest Reviews</div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="spdetails.rating.length==0" style="padding: 40px 0;" >
+            <div class="col-md-12 direction-row-row-center-column-center">
+                <div style="font-size: 20px">No Reviews posted for this Service Provider</div>
+            </div>
+        </div>
+
+        <div class="row" style="padding: 40px 0;" ng-show="spdetails.rating.length!=0" >
+            <div class="col-md-12">
+                <div class="row" style="padding-top: 20px;" ng-repeat="review in spdetails.rating">
+                    <div class="col-md-2 direction-column-row-left-column-between" style="height:95px;font-size: 20px">
+                        <div>
+                            <i class="fa fa-star" ng-repeat="x in review.full" style="padding-right: 1px"></i>
+                            <i class="fa fa-star-half-o" ng-repeat="x in review.half" style="padding-right: 1px"></i>
+                            <i class="fa fa-star-o" ng-repeat="x in review.empty" style="padding-right: 1px"></i>
+                        </div>
+                        <div>{{review.customer_first_name}} {{review.customer_last_name}}</div>
+
+                        <div style="font-size: 15px">{{review.dateRated | date: 'mediumDate'}}</div>
+                    </div>
+                    <div class="col-md-10" style="font-size: 20px;font-family: Avenir-Light">
+                        {{review.review}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

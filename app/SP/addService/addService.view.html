@@ -1,0 +1,153 @@
+<div>
+    <div class="container" ng-show="error==4" style="padding-top: 97px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group" style="padding-bottom: 50px">
+                    <label style="color: red;font-size: 30px;font-family:Avenir-Book;">{{error_message}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" ng-show="set">
+        <div class="row" style="padding-top:97px ">
+            <div class="col-md-12">
+                <p style="font-size: 48px;font-family: Avenir-Medium">Add New Service</p>
+                <p style="font-size: 20px;font-family: Avenir-Light">Please fill the form add new service to your portfolio</p>
+            </div>
+        </div>
+
+        <div class="row" style="padding:100px 0">
+            <div class="col-md-8 col-md-offset-2">
+                <form role="form" ng-submit="submitForm();"  style="font-size: 20px">
+                    <div class="form-group"  style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">Category</label>
+                        <select class="form-control input-lg rounded" ng-model="name" ng-change="updateSub()" style="height: 60px"  ng-focus="error=0">
+                            <option ng-repeat="item in category" ng-value="item.id">{{item.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group" ng-show="category_set"   style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">Sub category</label>
+                        <select class="form-control input-lg rounded" ng-model="subcat" ng-change="updateLocationType();"  style="height: 60px" ng-focus="error=0">
+                            <option ng-repeat="item in subcategory" ng-value="item.id">{{item.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group" ng-show="subcat_set"    style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label  style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">Location Type</label>
+                        <input type="text" class="form-control input-lg rounded" ng-model="location_type" disabled  style="height: 60px">
+                    </div>
+
+                    <div class="form-group" ng-show="subcat_set && location_type=='ZIPCODE'"   style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">Select State</label>
+                        <select class="form-control input-lg rounded" ng-model="selectedState" ng-change="updateCities();"  style="height: 60px" ng-focus="error=0">
+                            <option ng-repeat="state in states" ng-value="state">{{state}}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" ng-show="subcat_set && location_type=='ZIPCODE' && stateSet"   style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">Select Cities</label>
+                        <div
+                                isteven-multi-select
+                                input-model="cities"
+                                output-model="selectedCities"
+                                button-label="cityName"
+                                item-label="cityName"
+                                tick-property="ticked"
+                                max-labels="6"
+                                on-cLose = "updateZipcodes();"
+                                on-open = "removeError();"
+                                >
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-show="subcat_set && location_type=='ZIPCODE' && stateSet && citiesSet"   style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">Select Zipcodes</label>
+                        <div
+                                isteven-multi-select
+                                input-model="zipcodeArray"
+                                output-model="selectedZipcodes"
+                                button-label="zipcode"
+                                item-label="zipcode"
+                                tick-property="ticked"
+                                max-labels="6"
+                                on-open = "removeError();"
+                                >
+                        </div>
+                    </div>
+
+
+                    <div class="form-group" ng-show="subcat_set && location_type=='TOWN'"  style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">Select State</label>
+                        <select class="form-control input-lg rounded" ng-model="selectedState" ng-change="updateCities();"  style="height: 60px" ng-focus="error=0">
+                            <option ng-repeat="state in states" ng-value="state">{{state}}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" ng-show="subcat_set && location_type=='TOWN' && stateSet"   style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">Select Cities</label>
+                        <div
+                                isteven-multi-select
+                                input-model="cities"
+                                output-model="selectedCities"
+                                button-label="cityName"
+                                item-label="cityName"
+                                tick-property="ticked"
+                                max-labels="6"
+                                on-cLose = "updateLocalities();"
+                                on-open = "removeError();"
+                                >
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-show="subcat_set && location_type=='TOWN' && stateSet && citiesSet"   style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">Select Localities</label>
+                        <div
+                                isteven-multi-select
+                                input-model="localityArray"
+                                output-model="selectedLocalities"
+                                button-label="locality"
+                                item-label="locality"
+                                tick-property="ticked"
+                                max-labels="6"
+                                on-open = "removeError();"
+                                >
+                        </div>
+                    </div>
+
+
+                    <div class="form-group" ng-show="subcat_set && location_type=='RADIUS'"  style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">SEARCH FOR A PLACE</label>
+                        <input type="text" class="form-control input-lg rounded" id="search" placeholder="Enter a place"  style="height: 60px" ng-focus="error=0">
+                    </div>
+                    <div class="form-group" ng-show="subcat_set && location_type=='RADIUS'"  style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <div id="gmap" style="width: auto;height: 400px" class="form-control rounded "></div>
+                    </div>
+
+                    <div class="form-group" ng-show="subcat_set && location_type=='RADIUS'"  style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label style="font-size: 20px;font-family:Avenir-Book;padding-bottom: 20px">Radius (in {{countryLengthUnit}})</label>
+                        <ionslider ng-attr-id="radiusSlider" min="0" max="100" to="50"  type="'single'" from-fixed="true" to-fixed="false" on-change="sliderChange"></ionslider>
+                    </div>
+
+                    <div class="form-group"  style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">Description</label>
+                        <textarea rows="4" class="form-control input-lg" ng-model="desc" placeholder="Enter description of your services"   style="resize: none" ng-focus="error=0"></textarea>
+                    </div>
+
+                    <div class="form-group" ng-show="error" style="padding-bottom: 50px">
+                        <label style="color: red;font-size: 15px;font-family:Avenir-Book;">{{error_message}}</label>
+                    </div>
+                    <div class="form-group" ng-show="success" style="padding-bottom: 50px">
+                        <label style="color: #808080;font-size: 30px;font-family:Avenir-Book;">Success</label><br>
+                        <label style="color: #808080;font-size: 15px;font-family:Avenir-Book;">You will be redirected to  My Services page in 2 seconds..</label>
+                    </div>
+
+
+
+
+                    <button type="submit" class="btn btn-primary rounded"  style="width:200px;height:50px;font-family: Avenir-Light">Submit</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

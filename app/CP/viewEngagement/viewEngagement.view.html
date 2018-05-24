@@ -1,0 +1,303 @@
+<div>
+
+    <div id="ratingModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content" style="padding: 50px 50px; ">
+                <div class="modal-header">
+                    <button type="button" class="close mdl-btn "  ng-click="skipRating();" >&times;</button>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="modal-title text-left" style="font-size: 36px;font-family: Avenir-Medium">GIVE YOUR FEEDBACK</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" ng-submit="submitRating();" style="font-family: Avenir-Light">
+                        <div class="form-group">
+                            <label style="font-size: 20px;font-family: Avenir-Book">Rating</label>
+                            <div><rating ng-model="rating" max="5" readonly="false" on-hover="" on-leave="" style="font-size: 25px;outline-width: 0;"></rating></div>
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size: 20px;font-family: Avenir-Book">Review</label>
+                            <textarea class="form-control input-lg" placeholder="Enter review" rows="5" ng-model="review" ng-focus="rating_error=0" ng-change="rating_error=0" style="resize: none"></textarea>
+                        </div>
+                        <div class="form-group" ng-if="error">
+                            <p class="h5" style="color: red">{{error_message}}</p>
+                        </div>
+                        <div class="form-group" ng-if="success">
+                            <p class="h5" style="color: #808080">Your rating successfully submitted</p>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-large btn-primary btn-block input-lg" type="submit">SUBMIT</button>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-large btn-primary btn-block input-lg" type="button" ng-click="skipRating();">SKIP</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container" ng-show="error==4" style="padding-top: 97px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group" style="padding-bottom: 50px">
+                    <label style="color: red;font-size: 30px;font-family:Avenir-Book;">{{error_message}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" ng-show="set">
+
+        <div class="row" style="padding-top: 97px;">
+            <div class="col-md-8">
+                <div style="font-size: 48px;font-family: Avenir-Medium" class="wordwrap">{{data.subCategoryName}}</div>
+            </div>
+            <div class="col-md-4 col-md-offset-0 direction-row-row-center-column-center" ng-if="data.engagementsData[0].engagementStatus !='SELECTED'"
+                 ng-class="{yellow:data.engagementsData[0].engagementStatus.match('DUE'),green:data.engagementsData[0].engagementStatus.match('SUBMITTED FOR PROPOSAL') || data.engagementsData[0].engagementStatus.match('AUCTION IN PROGRESS') ||  data.engagementsData[0].engagementStatus.match('SELECTED') ||  data.engagementsData[0].engagementStatus.match('COMPLETED'),red:request.projectStatus.match('EXPIRED')}"
+                 style="height: 60px;font-size: 20px;color: white;font-family: Avenir-Light">
+                <span>{{data.engagementsData[0].engagementStatus}}</span>
+            </div>
+            <div class="col-md-4" style="padding: 20px 0" ng-if="data.engagementsData[0].engagementStatus =='SELECTED'">
+                <button type="button" class="btn btn-primary btn-block rounded"
+                        style="height:60px;font-family:Avenir-Light;" ng-click="completeProject();">Complete Project
+                </button>
+            </div>
+        </div>
+
+        <div class="row" style="padding-top: 50px;font-size: 25px; font-family: Avenir-Light">
+            <div class="col-md-4">
+                <span>Service Provider : <span class="link" ui-sref="CP.SPDetails({spId:data.engagementsData[0].spId,ancestor:ancestor})"> {{data.engagementsData[0].firstName}} {{data.engagementsData[0].lastName}}</span></span>
+            </div>
+
+            <div class="col-md-4  col-md-offset-1">
+                <span>Latest Price : {{data.currencySymbol}}{{data.engagementsData[0].latestPrice.toFixed(0)}}</span>
+            </div>
+
+            <div class="col-md-4 col-md-offset-0">
+                <span>Request Date : {{data.projectCreatedDateTime | date :"mediumDate"}}</span>
+            </div>
+        </div>
+
+
+        <div class="row" style="padding-top: 97px" ng-show="data.projectType==1">
+            <div class="col-md-12 direction-row-row-center-column-between"
+                 style="height: 70px;background-color:#E1E1E1;font-size: 30px;font-family: Avenir-Medium">
+                <div ng-click="proposal_show = !proposal_show" class="link"><span
+                        style="font-family: FontAwesome;outline-width: 0px">
+                           <span
+                                   ng-if="!proposal_show">&#xf067;</span><span
+                        ng-if="proposal_show">&#xf068;</span></span>&nbsp;View
+                    Proposal
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="data.projectType==1 && proposal_show" style="padding-top: 50px">
+            <div class="col-md-8 col-md-offset-2">
+                <form role="form" ng-submit="" style="font-size: 20px">
+                    <div class="form-group" ng-repeat="item in data.engagementsData[0].proposalForm"
+                         style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">{{item.title}}<span
+                                ng-if="item.required==true"> *</span><span ng-if="item.required==false"></span></label>
+
+                        <input ng-if="item.type==0 || item.type==2|| item.type==3 || item.type==6 || item.type==7 || item.type==8"
+                               type="text" class="form-control input-lg rounded"
+                               ng-value="item.filledValues[0]" style="height: 60px" readonly>
+
+                        <div ng-if="item.type==1" ng-repeat="box in item.value">
+                            <div class="checkbox">
+                                <label style="font-size: 20px;font-family: Avenir-light;"><input type="checkbox" ng-checked="isPresent(item.filledValues,box);"
+                                                                                                 disabled>
+                                    {{box}}</label>
+                            </div>
+                        </div>
+
+
+                        <div ng-if="item.type==4">
+                            <ionslider min="item.value[0]" max="item.value[1]" from="item.filledValues[0]"
+                                       to="item.filledValues[1]" type="'double'" from-fixed="true"
+                                       to-fixed="true"></ionslider>
+
+                        </div>
+
+
+                        <div class="row" ng-if="item.type==5">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control input-lg rounded disabled"
+                                       ng-value="extractDate(item.filledValues[0]);" style="height: 60px" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control input-lg rounded disabled"
+                                       ng-value="extractTime(item.filledValues[0]);" style="height: 60px" readonly>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+
+        <div class="row" style="padding-top: 97px" ng-show="data.projectType==0">
+            <div class="col-md-12 direction-row-row-center-column-between"
+                 style="height: 70px;background-color:#E1E1E1;font-size: 30px;font-family: Avenir-Medium">
+                <div ng-click="auction_show = !auction_show" class="link"><span
+                        style="font-family: FontAwesome;outline-width: 0px">
+                           <span
+                                   ng-if="!auction_show">&#xf067;</span><span
+                        ng-if="auction_show">&#xf068;</span></span>&nbsp;View
+                    Auction
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="data.projectType==0 && auction_show" style="padding-top: 50px">
+            <div class="col-md-8 col-md-offset-2">
+                <form role="form" ng-submit="" style="font-size: 20px">
+                    <div class="form-group" ng-repeat="item in data.engagementsData[0].auctionForm"
+                         style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">{{item.title}}<span
+                                ng-if="item.required==true"> *</span><span ng-if="item.required==false"></span></label>
+
+                        <input ng-if="item.type==0 || item.type==2|| item.type==3 || item.type==6 || item.type==7 || item.type==8"
+                               type="text" class="form-control input-lg rounded"
+                               ng-value="item.filledValues[0]" style="height: 60px" readonly>
+
+                        <div ng-if="item.type==1" ng-repeat="box in item.value">
+                            <div class="checkbox">
+                                <label style="font-size: 20px;font-family: Avenir-light;"><input type="checkbox" ng-checked="isPresent(item.filledValues,box);"
+                                                                                                 disabled>
+                                    {{box}}</label>
+                            </div>
+                        </div>
+
+
+                        <div ng-if="item.type==4">
+                            <ionslider min="item.value[0]" max="item.value[1]" from="item.filledValues[0]"
+                                       to="item.filledValues[1]" type="'double'" from-fixed="true"
+                                       to-fixed="true"></ionslider>
+
+                        </div>
+
+
+                        <div class="row" ng-if="item.type==5">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control input-lg rounded disabled"
+                                       ng-value="extractDate(item.filledValues[0]);" style="height: 60px" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control input-lg rounded disabled"
+                                       ng-value="extractTime(item.filledValues[0]);" style="height: 60px" readonly>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+
+
+
+
+        <div class="row" style="padding-top: 30px">
+            <div class="col-md-12 direction-row-row-center-column-between"
+                 style="height: 70px;background-color:#E1E1E1;font-size: 30px;font-family: Avenir-Medium">
+                <div>Discussions</div>
+            </div>
+        </div>
+
+        <div class="row" style="padding-top: 40px;padding-bottom: 40px">
+            <div class="col-md-12">
+                <form role="form" ng-submit="addThread();" style="font-size: 20px;font-family: Avenir-Lightt">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <input ng-model="add_name" type="text" placeholder="Add new thread"
+                                   class="form-control input-lg rounded" style="height: 60px">
+                        </div>
+                        <div class="col-md-3" style="font-size: 20px">
+                            <button type="submit" class="btn btn-primary   rounded"
+                                    style="width:200px;height:60px;font-family: Avenir-Light">Add Thread
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row" ng-repeat="thread in threads" style="padding-bottom: 10px;">
+            <div class="col-md-12">
+
+                <div class="box box-primary box-solid direct-chat direct-chat-primary">
+                    <div class="box-header">
+                        <h3 class="box-title">{{thread.name}}</h3>
+
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body" style="display: block;">
+                        <!-- Conversations are loaded here -->
+                        <div class="direct-chat-messages">
+                            <!-- Message. Default to the left -->
+                            <div ng-if="messages[$index].length==0">No chats</div>
+                            <div class="direct-chat-msg" ng-repeat="message in messages[$index]"
+                                 ng-class="{right:message.postedByType=='sp'}">
+                                <div class="direct-chat-info clearfix">
+                                    <span class="direct-chat-name" ng-class="{'pull-right':message.postedByType=='sp'}">{{message.firstName}} {{message.lastName}}</span>
+                                    <span class="direct-chat-timestamp"
+                                          ng-class="{'pull-right':message.postedByType=='customer'}">{{message.datePosted | date:short}}</span>
+                                </div>
+                                <!-- /.direct-chat-info -->
+                                <img class="direct-chat-img" ng-src="{{sp_img}}" alt="message user image"
+                                     ng-if="message.postedByType=='sp'">
+                                <img class="direct-chat-img" ng-src="{{cust_img}}" alt="message user image"
+                                     ng-if="message.postedByType=='customer'"><!-- /.direct-chat-img -->
+                                <div class="direct-chat-text">{{message.messageString}}</div>
+                                <!-- /.direct-chat-text -->
+                            </div>
+                            <!-- /.direct-chat-msg -->
+
+                            <!-- Message to the right -->
+
+                        </div>
+                        <!--/.direct-chat-messages-->
+
+                        <!-- Contacts are loaded here -->
+
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer" style="display: block;">
+                        <form ng-submit="sendMessage(thread.id,send_message[$index],$index);">
+                            <div class="input-group">
+                                <input type="text" name="message" placeholder="Type Message ..." class="form-control"
+                                       ng-model="send_message[$index]">
+              <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary btn-flat">Send</button>
+              </span>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.box-footer-->
+                </div>
+
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>

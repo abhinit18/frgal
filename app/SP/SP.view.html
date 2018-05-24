@@ -1,0 +1,26 @@
+<div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 direction-row-row-center-column-right" style="height: 100px;font-size: 20px;">
+                <div class="direction-row-row-center-column-right link" style="padding: 0 50px;height:52px;"  ui-sref="SP.viewProfile">Welcome {{getCookie('sp_fname')}}</div>
+                <div class="direction-row-row-center-column-right link" style="padding: 0 50px;height:52px;border: 2px solid #000000; border-radius:20px " ng-click = "submitSPLogout();">LOGOUT</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="common2">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 direction-row-row-center-column-left" style="height: 100px;font-size: 20px;">
+                    <div class="link" ng-class="{active:$parent.getCurrentPath().match('myServices') || $parent.getCurrentPath().match('addService')}" style="padding-right:50px;" ui-sref="SP.myServices"> MY SERVICES</div>
+                    <div class="link" ng-class="{active:$parent.getCurrentPath().match('myEngagements') || $parent.getCurrentPath().match('fromEngagements')}"style="padding: 0 50px;" ui-sref="SP.myEngagements">MY ENGAGEMENTS</div>
+                    <div class="link" ng-class="{active:$parent.getCurrentPath().match('myProjects')|| $parent.getCurrentPath().match('fromProject')}" style="padding: 0 50px;" ui-sref="SP.myProjects">MY PROJECTS</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ui-view></div>
+</div>

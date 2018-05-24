@@ -1,0 +1,44 @@
+<div>
+
+
+    <div class="container" ng-show="error==4" style="padding-top: 97px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group" style="padding-bottom: 50px">
+                    <label style="color: red;font-size: 30px;font-family:Avenir-Book;">{{error_message}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" ng-show="set">
+        <div class="row" ng-show="requests.length==0" style="padding: 40px 0" >
+            <div class="col-md-12 direction-row-row-center-column-center">
+                <div style="font-size: 20px">No Current Requests</div>
+            </div>
+        </div>
+        <div class="row" ng-show="requests.length!=0" >
+            <div class="col-md-12 link" ng-repeat="request in requests" ui-sref="CP.viewRequest({projectId:request._id})">
+                <div class="row" style="padding-top: 97px;">
+                    <div class="col-md-8">
+                        <div style="font-size: 48px;font-family: Avenir-Medium" >{{request.subCategoryName}}</div>
+                    </div>
+                    <div class="col-md-4 col-md-offset-0 direction-row-row-center-column-center" ng-class="{yellow:request.projectStatus.match('REQUESTED'),green:request.projectStatus.match('COMPLETED'),red:request.projectStatus.match('CANCELLED')}" style="height: 60px;font-size: 20px;color: white;font-family: Avenir-Light">
+                        <span>{{request.projectStatus}}</span>
+                    </div>
+                </div>
+                <div class="row" style="padding-top: 10px">
+                    <div class="col-md-12 direction-row-row-center-column-center" style="height: 200px;font-size: 25px; font-family: Avenir-Book">
+                        <div class="direction-row-row-center-column-center text-center" style="padding: 0 25px;margin: 0 25px;height:100px;border: 2px solid #000000; border-radius:20px;min-width: 200px "  ng-if="request.projectType==1">{{request.numberOfSpResponded}}<small>&nbsp;Proposals</small></div>
+                        <div class="direction-row-row-center-column-center text-center" style="padding: 0 25px;margin: 0 25px;height:100px;border: 2px solid #000000; border-radius:20px ;min-width: 200px"  ng-if="request.projectType==0">{{request.numberOfSpResponded}}<small>&nbsp;Bids</small></div>
+                        <div class="direction-row-row-center-column-center text-center" style="padding: 0 25px;margin: 0 25px;height:100px;border: 2px solid #000000; border-radius:20px "  >{{request.currencySymbol}}{{request.averagePrice.toFixed(0)}}<small>&nbsp;Average Price</small></div>
+                        <div class="direction-row-row-center-column-center text-center" style="padding: 0 25px;margin: 0 25px;height:100px;border: 2px solid #000000; border-radius:20px "  >{{request.currencySymbol}}{{request.minimumPrice.toFixed(0)}}<small>&nbsp;Minimum Price</small></div>
+                        <div class="direction-row-row-center-column-center text-center" style="padding: 0 25px;margin: 0 25px;height:100px; "  ><small>Request Date:</small>{{request.projectCreatedDateTime | date}}</div>
+                    </div>
+                </div>
+
+                <hr style="height:2px; border:none;  background:rgba(89,89,89,0.5);">
+            </div>
+        </div>
+    </div>
+</div>

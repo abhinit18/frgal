@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="Frugal">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <script src="bower_components/jquery/dist/jquery.js"> </script>
+
+    <script src="bower_components/jquery-ui/jquery-ui.js"> </script>
+    <link href="bower_components/jquery-ui/themes/base/jquery-ui.css" rel="stylesheet" />
+
+
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <script src="bower_components/datatables/media/js/jquery.dataTables.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <script src="bower_components/angular/angular.js"> </script>
+
+    <script src="bower_components/angular-route/angular-route.js"> </script>
+
+    <script src="bower_components/angular-cookies/angular-cookies.js"> </script>
+
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"> </script>
+
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"> </script>
+
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"> </script>
+
+    <script src="bower_components/nprogress/nprogress.js"> </script>
+    <link rel="stylesheet" href="bower_components/nprogress/nprogress.css">
+
+    <script src="bower_components/angular-ui-mask/dist/mask.js"></script>
+
+
+    <script src="bower_components/datepicker/bootstrap-datepicker.js"> </script>
+    <link rel="stylesheet" href="bower_components/datepicker/datepicker3.css">
+
+    <script src="bower_components/clockpicker/src/clockpicker.js"> </script>
+    <link rel="stylesheet" href="bower_components/clockpicker/src/clockpicker.css">
+    <link rel="stylesheet" href="bower_components/clockpicker/src/standalone.css">
+
+    <link href="bower_components/Select/select.css" rel="stylesheet" />
+    <link href="bower_components/Select/selectize.default.css" rel="stylesheet" />
+    <script src="bower_components/Select/select.js"></script>
+
+    <link href="bower_components/direct-chat-AdminLTE/dist/css/AdminLTE.css" rel="stylesheet"/>
+    <script src="bower_components/direct-chat-AdminLTE/dist/js/app.js"></script>
+
+
+    <link rel="stylesheet" href="bower_components/datatables/media/css/jquery.dataTables.css" />
+    <script src="bower_components/angular-datatables/dist/angular-datatables.js"></script>
+    <link rel="stylesheet" href="bower_components/datatables/media/css/dataTables.bootstrap.css" />
+
+    <link rel="stylesheet" href="bower_components/ion.rangeslider/css/normalize.css" />
+    <link rel="stylesheet" href="bower_components/ion.rangeslider/css/ion.rangeSlider.css" />
+    <link rel="stylesheet" href="bower_components/ion.rangeslider/css/ion.rangeSlider.skinHTML5.css" />
+    <script src="bower_components/ion.rangeslider/js/ion.rangeSlider.js"></script>
+
+    <script src="bower_components/isteven-multselect/isteven-multi-select.js"></script>
+    <link rel="stylesheet" href="bower_components/isteven-multselect/isteven-multi-select.css" />
+
+    <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+
+
+
+
+    <link rel="stylesheet" href="style/layout.css">
+
+    <title>Frugal</title>
+
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="favicon/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="favicon/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="favicon/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="favicon/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="favicon/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="favicon/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="favicon/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="favicon/apple-touch-icon-152x152.png" />
+    <link rel="icon" type="image/png" href="favicon/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="favicon/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="favicon/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="favicon/favicon-128.png" sizes="128x128" />
+    <meta name="application-name" content="&nbsp;"/>
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="favicon/mstile-144x144.png" />
+    <meta name="msapplication-square70x70logo" content="favicon/mstile-70x70.png" />
+    <meta name="msapplication-square150x150logo" content="favicon/mstile-150x150.png" />
+    <meta name="msapplication-wide310x150logo" content="favicon/mstile-310x150.png" />
+    <meta name="msapplication-square310x310logo" content="favicon/mstile-310x310.png" />
+
+</head>
+<body ng-controller="MainCtrl" ng-class="{pointer:pointer_flag}">
+
+<script src="app/app.js"></script>
+<script src="app/config.js"></script>
+<script src="app/MainCtrl.js"></script>
+
+<script src="app/welcomeScreen/welcomeScreenCtrl.js"></script>
+
+<script src="app/CP/CPCtrl.js"></script>
+<script src="app/CP/serviceForm/serviceFormCtrl.js"></script>
+<script src="app/CP/SPsList/SPsListCtrl.js"></script>
+<script src="app/CP/SPDetails/SPDetailsCtrl.js"></script>
+<script src="app/CP/auctionForm/auctionFormCtrl.js"></script>
+<script src="app/CP/myRequests/myRequestsCtrl.js"></script>
+<script src="app/CP/viewRequest/viewRequestCtrl.js"></script>
+<script src="app/CP/myProjects/myProjectsCtrl.js"></script>
+<script src="app/CP/viewEngagement/viewEngagementCtrl.js"></script>
+<script src="app/CP/viewProfile/viewProfileCtrl.js"></script>
+
+<script src="app/SP/SPCtrl.js"></script>
+<script src="app/SP/myServices/myServicesCtrl.js"></script>
+<script src="app/SP/myEngagements/myEngagementsCtrl.js"></script>
+<script src="app/SP/myProjects/myProjectsCtrl.js"></script>
+<script src="app/SP/viewEngagement/viewEngagementCtrl.js"></script>
+<script src="app/SP/addService/addServiceCtrl.js"></script>
+<script src="app/SP/customerDetail/customerDetailCtrl.js"></script>
+<script src="app/SP/viewProfile/viewProfileCtrl.js"></script>
+
+
+
+
+<div ui-view></div>
+
+</body>
+
+</html>

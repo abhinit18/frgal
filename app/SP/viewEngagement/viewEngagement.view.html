@@ -1,0 +1,623 @@
+<div>
+
+    <div id="customerModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content" style="padding: 50px 50px; ">
+                <div class="modal-header">
+                    <button type="button" class="close mdl-btn "  ng-click="hideCustomerModal();" >&times;</button>
+                    <h2 class="modal-title" id="myModalLabel">Customer Details</h2>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row" style="height: 200px">
+                        <div class="col-xs-4 direction-column-row-center-column-between" style="height: 100%">
+
+                            <img ng-src="{{custImage}}" class="img-rounded" style="height: inherit;width: auto">
+
+                        </div>
+                        <div class="col-xs-8 direction-column-row-left-column-between" style="height: 100%">
+                            <div class="row text-left">
+                                <div class="col-md-12 h3">
+                                    {{custName}}
+                                </div>
+                            </div>
+
+                            <div class="row text-left">
+                                <div class="col-md-12 h3">
+                                    {{custEmail}}
+                                </div>
+                            </div>
+
+                            <div class="row text-left">
+                                <div class="col-md-12 h3">
+                                    ({{custPrefix}}) {{custPhone}}
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- error div -->
+    <div class="container" ng-show="error1==4" style="padding-top: 97px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group" style="padding-bottom: 50px">
+                    <label style="color: red;font-size: 30px;font-family:Avenir-Book;">{{error_message}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- main container -->
+    <div class="container" ng-show="loaded>=4">
+
+        <!-- info div -->
+        <div class="row" style="padding-top: 97px;">
+            <div class="col-md-8">
+                <div style="font-size: 48px;font-family: Avenir-Medium">{{subCatName}}</div>
+            </div>
+            <div class="col-md-4 col-md-offset-0 direction-row-row-center-column-center"
+                 ng-class="{yellow:engagementStatus.match('DUE'),green:engagementStatus.match('SUBMITTED FOR PROPOSAL') || engagementStatus.match('AUCTION IN PROGRESS') ||  engagementStatus.match('SELECTED') ||  engagementStatus.match('COMPLETED'),red:projectStatus.match('EXPIRED')}"
+                 style="height: 60px;font-size: 20px;color: white;font-family: Avenir-Light">
+                <span>{{engagementStatus}}</span>
+            </div>
+        </div>
+
+        <div class="row" style="padding-top: 50px;font-size: 25px; font-family: Avenir-Light">
+            <div class="col-md-4">
+                <span>Customer : <span class="link" ng-click="showCustomerModal()">{{custName}}</span></span>
+            </div>
+            <div class="col-md-4  col-md-offset-0">
+                <span>Request Date : {{requestDate | date :"mediumDate"}}</span>
+            </div>
+            <div class="col-md-4  col-md-offset-0">
+                <span>Latest Price : <span ng-if="engagementStatus!='DUE'">&#8377 {{latestPrice.toFixed(0)}}</span> <span ng-if="engagementStatus=='DUE'">NA</span></span>
+            </div>
+        </div>
+
+        <!--   View Service Details  -->
+
+        <div class="row" style="padding-top: 97px">
+            <div class="col-md-12 direction-row-row-center-column-between"
+                 style="height: 70px;background-color:#E1E1E1;font-size: 30px;font-family: Avenir-Medium">
+                <div ng-click="q_show = !q_show" class="link"><span
+                        style="font-family: FontAwesome;outline-width: 0px">
+                           <span
+                                   ng-if="!q_show">&#xf067;</span><span
+                        ng-if="q_show">&#xf068;</span></span>&nbsp;View
+                    Service Details
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="q_show" style="padding-top: 50px">
+            <div class="col-md-8 col-md-offset-2">
+                <form role="form" ng-submit="" style="font-size: 20px">
+                    <div class="form-group" ng-repeat="item in QForm"
+                         style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">{{item.title}}<span
+                                ng-if="item.required==true"> *</span><span ng-if="item.required==false"></span></label>
+
+                        <input ng-if="item.type==0 || item.type==2|| item.type==3 || item.type==6 || item.type==7 || item.type==8"
+                               type="text" class="form-control input-lg rounded"
+                               ng-value="item.filledValues[0]" style="height: 60px" readonly>
+
+                        <div ng-if="item.type==1" ng-repeat="box in item.value">
+                            <div class="checkbox">
+                                <label style="font-size: 20px;font-family: Avenir-light;"><input type="checkbox" ng-checked="isPresent(item.filledValues,box);"
+                                                                                                 disabled>
+                                    {{box}}</label>
+                            </div>
+                        </div>
+
+
+                        <div ng-if="item.type==4">
+                            <ionslider min="item.value[0]" max="item.value[1]" from="item.filledValues[0]"
+                                       to="item.filledValues[1]" type="'double'" from-fixed="true"
+                                       to-fixed="true"></ionslider>
+
+                        </div>
+
+
+                        <div class="row" ng-if="item.type==5">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control input-lg rounded disabled"
+                                       ng-value="item.filledValues[0] | date : 'mediumDate'" style="height: 60px" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control input-lg rounded disabled"
+                                       ng-value="item.filledValues[0] | date : 'shortTime'" style="height: 60px" readonly>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+
+
+        <!--   View Proposal  -->
+
+        <div class="row" style="padding-top: 30px" ng-show="projectType==1 && engagementStatus!='DUE'" >
+            <div class="col-md-12 direction-row-row-center-column-between"
+                 style="height: 70px;background-color:#E1E1E1;font-size: 30px;font-family: Avenir-Medium">
+                <div ng-click="proposal_show = !proposal_show" class="link"><span
+                        style="font-family: FontAwesome;outline-width: 0px">
+                           <span
+                                   ng-if="!proposal_show">&#xf067;</span><span
+                        ng-if="proposal_show">&#xf068;</span></span>&nbsp;View Proposal Form
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="proposal_show &&  projectType==1 && engagementStatus!='DUE'" style="padding-top: 50px">
+            <div class="col-md-8 col-md-offset-2">
+                <form role="form" ng-submit="" style="font-size: 20px">
+                    <div class="form-group" ng-repeat="item in PForm"
+                         style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">{{item.title}}<span
+                                ng-if="item.required==true"> *</span><span ng-if="item.required==false"></span></label>
+
+                        <input ng-if="item.type==0 || item.type==2|| item.type==3 || item.type==6 || item.type==7 || item.type==8"
+                               type="text" class="form-control input-lg rounded"
+                               ng-value="item.filledValues[0]" style="height: 60px" readonly>
+
+                        <div ng-if="item.type==1" ng-repeat="box in item.value">
+                            <div class="checkbox">
+                                <label style="font-size: 20px;font-family: Avenir-light;"><input type="checkbox" ng-checked="isPresent(item.filledValues,box);"
+                                                                                                 disabled>
+                                    {{box}}</label>
+                            </div>
+                        </div>
+
+
+                        <div ng-if="item.type==4">
+                            <ionslider min="item.value[0]" max="item.value[1]" from="item.filledValues[0]"
+                                       to="item.filledValues[1]" type="'double'" from-fixed="true"
+                                       to-fixed="true"></ionslider>
+
+                        </div>
+
+
+                        <div class="row" ng-if="item.type==5">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control input-lg rounded disabled"
+                                       ng-value="item.filledValues[0] | date : 'mediumDate'" style="height: 60px" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control input-lg rounded disabled"
+                                       ng-value="item.filledValues[0] | date : 'shortTime'" style="height: 60px" readonly>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+
+
+
+
+        <!--   Save Proposal -->
+
+        <div class="row" style="padding-top: 30px" ng-show="projectType==1 && engagementStatus=='DUE'" >
+            <div class="col-md-12 direction-row-row-center-column-between"
+                 style="height: 70px;background-color:#E1E1E1;font-size: 30px;font-family: Avenir-Medium">
+                <div ng-click="proposal_show = !proposal_show" class="link"><span
+                        style="font-family: FontAwesome;outline-width: 0px">
+                           <span
+                                   ng-if="!proposal_show">&#xf067;</span><span
+                        ng-if="proposal_show">&#xf068;</span></span>&nbsp;Save Proposal Form
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row" ng-show="projectType==1 && engagementStatus=='DUE' && proposal_show" style="padding-top: 50px">
+            <div class="col-md-8 col-md-offset-2">
+                <form role="form"  ng-submit="submitProposalForm();"  style="font-size: 20px">
+                    <div class="form-group" ng-repeat="item in PForm" style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">{{item.title}}<span ng-if="item.required==true"> *</span><span ng-if="item.required==false"></span></label>
+
+                        <input ng-if="item.type==0 || item.type==6" type="text" placeholder="{{item.title}}" class="form-control input-lg rounded" ng-model="formValues[$index]" ng-focus="error[$index]=false" style="height: 60px">
+
+                        <div ng-if="item.type==1" ng-repeat="box in item.value" ng-init="formValues[$parent.$parent.$index]=[];">
+                            <div class="checkbox">
+                                <label style="font-size: 20px;font-family: Avenir-light;"><input type="checkbox"  ng-click="toggleCheckbox($parent.$parent.$index,box)" ng-focus="error[$parent.$parent.$index]=false"> {{box}}</label>
+                            </div>
+                        </div>
+
+                        <div ng-if="item.type==2" ng-repeat="radio in item.value">
+                            <p  style="font-size: 20px;font-family: Avenir-light;"><input type="radio" ng-model="formValues[$parent.$parent.$index]"  ng-value="radio"  ng-focus="error[$parent.$parent.$index]=false" > {{radio}}</p>
+                        </div>
+
+                        <select ng-if="item.type==3" class="form-control input-lg rounded"  ng-model="formValues[$index]" placeholder="{{item.title}}"   ng-focus="error[$index]=false"  style="height: 60px">
+                            <option ng-repeat="listvalue in item.value" ng-value="listvalue">{{listvalue}}</option>
+                        </select>
+
+                        <div ng-if="item.type==4" ng-init="sliderInitialise($index,'proposal');">
+                            <ionslider ng-attr-id="{{$index}}" min="item.value[0]" max="item.value[1]" from="formValues[$index][0]" to="formValues[$index][1]" type="'double'" from-fixed="false" to-fixed="false" on-change="sliderChange"></ionslider>
+                        </div>
+
+
+
+                        <div class="row" ng-if="item.type==5" ng-init="formValues[$index]=[];formValues[$index][0]= '';formValues[$index][1]= ''  ;">
+                            <div class="col-md-6">
+                                <input type="text"  class="form-control input-lg date rounded" ng-model="formValues[$index][0]" placeholder="Date"  ng-change="error[$index]=false" ng-focus="error[$index]=false"  style="height: 60px;background-color: white" readonly="readonly">
+                            </div>
+                            <div class="col-md-6 time">
+                                <input type="text" class="form-control input-lg rounded" ng-model="formValues[$index][1]" placeholder="Time"  ng-change="error[$index]=false" ng-focus="error[$index]=false"  style="height: 60px;background-color: white" readonly="readonly">
+                            </div>
+
+                        </div>
+
+
+                        <input ng-if="item.type==7 || item.type==8" type="text" placeholder="{{item.title}}" class="form-control input-lg rounded" ng-model="formValues[$index]"   ng-focus="error[$index]=false"  style="height: 60px">
+
+                        <div class="form-group" ng-show="error[$index]" style="padding-top: 20px">
+                            <label style="color: red;font-size: 15px;font-family: Avenir-Book">{{error_message[$index]}}</label>
+                        </div>
+
+                    </div>
+
+
+
+                    <button type="submit" class="btn btn-primary rounded" style="width:200px;height:50px;font-family: Avenir-Light">Submit</button>
+
+                </form>
+            </div>
+        </div>
+
+
+
+        <!--   View Auction  -->
+
+        <div class="row" style="padding-top: 30px" ng-show="projectType==0 && engagementStatus!='DUE'" >
+            <div class="col-md-12 direction-row-row-center-column-between"
+                 style="height: 70px;background-color:#E1E1E1;font-size: 30px;font-family: Avenir-Medium">
+                <div ng-click="auction_show = !auction_show" class="link"><span
+                        style="font-family: FontAwesome;outline-width: 0px">
+                           <span
+                                   ng-if="!auction_show">&#xf067;</span><span
+                        ng-if="auction_show">&#xf068;</span></span>&nbsp;View Auction
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="auction_show &&  projectType==0 && engagementStatus!='DUE'" style="padding-top: 50px">
+            <div class="col-md-8 col-md-offset-2">
+                <form role="form" ng-submit="" style="font-size: 20px">
+                    <div class="form-group" ng-repeat="item in AForm"
+                         style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">{{item.title}}<span
+                                ng-if="item.required==true"> *</span><span ng-if="item.required==false"></span></label>
+
+                        <input ng-if="item.type==0 || item.type==2|| item.type==3 || item.type==6 || item.type==7 || item.type==8"
+                               type="text" class="form-control input-lg rounded"
+                               ng-value="item.filledValues[0]" style="height: 60px" readonly>
+
+                        <div ng-if="item.type==1" ng-repeat="box in item.value">
+                            <div class="checkbox">
+                                <label style="font-size: 20px;font-family: Avenir-light;"><input type="checkbox" ng-checked="isPresent(item.filledValues,box);"
+                                                                                                 disabled>
+                                    {{box}}</label>
+                            </div>
+                        </div>
+
+
+                        <div ng-if="item.type==4">
+                            <ionslider min="item.value[0]" max="item.value[1]" from="item.filledValues[0]"
+                                       to="item.filledValues[1]" type="'double'" from-fixed="true"
+                                       to-fixed="true"></ionslider>
+
+                        </div>
+
+
+                        <div class="row" ng-if="item.type==5">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control input-lg rounded disabled"
+                                       ng-value="item.filledValues[0] | date : 'mediumDate'" style="height: 60px" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control input-lg rounded disabled"
+                                       ng-value="item.filledValues[0] | date : 'shortTime'" style="height: 60px" readonly>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+
+
+
+        <!--   Save Auction  -->
+
+        <div class="row" style="padding-top: 30px" ng-show="projectType==0 && engagementStatus=='DUE'" >
+            <div class="col-md-12 direction-row-row-center-column-between"
+                 style="height: 70px;background-color:#E1E1E1;font-size: 30px;font-family: Avenir-Medium">
+                <div ng-click="auction_show = !auction_show" class="link"><span
+                        style="font-family: FontAwesome;outline-width: 0px">
+                           <span
+                                   ng-if="!auction_show">&#xf067;</span><span
+                        ng-if="auction_show">&#xf068;</span></span>&nbsp;Save Auction Form
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="auction_show &&  projectType==0 && engagementStatus=='DUE'" style="padding-top: 50px">
+            <div class="col-md-8 col-md-offset-2">
+                <form role="form" ng-submit="submitAuctionForm()" style="font-size: 20px">
+                    <div class="form-group" ng-repeat="item in AForm" style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">{{item.title}}<span ng-if="item.required==true">* </span><span ng-if="item.required==false"></span><span ng-if="item.forCp==true"> (Filled by customer)</span></label>
+
+                        <div ng-if="item.forSp==true">
+                            <input ng-if="item.type==0  || item.type==6" ng-disabled="item.forSp==false" type="text"  placeholder="Enter {{item.title}}" class="form-control input-lg rounded" ng-model="formValues[$index]" ng-focus="error[$index]=false" style="height: 60px;background-color: white">
+
+                            <div ng-if="item.type==1" ng-repeat="box in item.value" ng-init="formValues[$parent.$parent.$index]=[];">
+                                <div class="checkbox">
+                                    <label style="font-size: 20px;font-family: Avenir-light;"><input type="checkbox"  ng-disabled="item.forSp==false"   ng-click="toggleCheckbox($parent.$parent.$index,box)"  ng-focus="error[$parent.$parent.$index]=false" style="background-color: white"> {{box}}</label>
+                                </div>
+                            </div>
+
+                            <div ng-if="item.type==2" ng-repeat="radio in item.value">
+                                <label style="font-size: 20px;font-family: Avenir-light;"><input type="radio" ng-disabled="item.forSp==false" ng-model="formValues[$parent.$parent.$index]"  ng-value="radio" ng-focus="error[$parent.$parent.$index]=false" style="background-color: white"> {{radio}}</label>
+                            </div>
+
+                            <select ng-if="item.type==3" class="form-control input-lg rounded"  ng-model="formValues[$index]" placeholder="Enter {{item.title}}"  ng-focus="error[$index]=false"  style="height: 60px" ng-disabled="item.forSp==false" >
+                                <option ng-repeat="listvalue in item.value" ng-value="listvalue">{{listvalue}}</option>
+                            </select>
+
+                            <div ng-if="item.type==4" ng-init="sliderInitialise($index,'auction');">
+                                <ionslider ng-attr-id="{{$index}}" min="item.value[0]" max="item.value[1]" from="formValues[$index][0]" to="formValues[$index][1]" type="'double'" from-fixed="item.forCp" to-fixed="item.forCp" on-change="sliderChange"></ionslider>
+                            </div>
+
+
+                            <div class="row" ng-if="item.type==5" ng-init="formValues[$index]=[];formValues[$index][0]= '';formValues[$index][1]= ''  ;">
+                                <div class="col-md-6">
+                                    <input type="text"  class="form-control input-lg date rounded" ng-disabled="item.forSp==false" ng-model="formValues[$index][0]"  placeholder="Date"   ng-focus="error[$index]=false"  style="height: 60px;background-color: white">
+                                </div>
+                                <div class="col-md-6 time">
+                                    <input type="text" class="form-control input-lg rounded" ng-disabled="item.forSp==false" ng-model="formValues[$index][1]" placeholder="Time" ng-focus="error[$index]=false"  style="height: 60px;background-color: white">
+                                </div>
+
+                            </div>
+
+                            <input ng-if="item.type==7 || item.type==8"  ng-disabled="item.forSp==false"  type="text" placeholder="Enter {{item.title}}" class="form-control input-lg rounded" ng-model="formValues[$index]"  ng-change="error[$index]=false" ng-focus="error[$index]=false"  style="height: 60px;background-color: white">
+
+                        </div>
+
+                        <div ng-if="item.forCp==true">
+                            <input ng-if="item.type==0 || item.type==2|| item.type==3 || item.type==6 || item.type==7 || item.type==8"
+                                   type="text" class="form-control input-lg rounded"
+                                   ng-value="item.filledValues[0]" style="height: 60px" readonly>
+
+                            <div ng-if="item.type==1" ng-repeat="box in item.value">
+                                <div class="checkbox">
+                                    <label style="font-size: 20px;font-family: Avenir-light;"><input type="checkbox" ng-checked="isPresent(item.filledValues,box);"
+                                                                                                     disabled>
+                                        {{box}}</label>
+                                </div>
+                            </div>
+
+
+                            <div ng-if="item.type==4">
+                                <ionslider min="item.value[0]" max="item.value[1]" from="item.filledValues[0]"
+                                           to="item.filledValues[1]" type="'double'" from-fixed="true"
+                                           to-fixed="true"></ionslider>
+
+                            </div>
+
+
+                            <div class="row" ng-if="item.type==5">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control input-lg rounded disabled"
+                                           ng-value="item.filledValues[0] | date : 'mediumDate'" style="height: 60px" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control input-lg rounded disabled"
+                                           ng-value="item.filledValues[0] | date : 'shortTime'" style="height: 60px" readonly>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div class="form-group" ng-show="error[$index]" style="padding-top: 20px">
+                            <label style="color: red;font-size: 15px;font-family: Avenir-Book">{{error_message[$index]}}</label>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group" ng-show="error1" style="padding-bottom: 50px">
+                        <label style="color: red;font-size: 15px;font-family:Avenir-Book;">{{error_message}}</label>
+                    </div>
+                    <div class="form-group" ng-show="ongoing" style="padding-bottom: 50px">
+                        <label style="color: #808080;font-size: 30px;font-family:Avenir-Book;" ng-show="success" >Success</label><br>
+                        <img ng-src="assets/spinner.gif" height="170px" width="170px"  >
+                    </div>
+
+                    <button type="submit" class="btn btn-primary rounded" style="width:200px;height:50px;font-family: Avenir-Light" ng-disabled="success">Submit</button>
+
+
+                </form>
+            </div>
+        </div>
+
+
+
+        <!--   Bids  -->
+
+        <div class="row" style="padding-top: 30px" ng-show="projectType==0 && engagementStatus!='DUE'" >
+            <div class="col-md-12 direction-row-row-center-column-between"
+                 style="height: 70px;background-color:#E1E1E1;font-size: 30px;font-family: Avenir-Medium">
+                <div ng-click="bid_show = !bid_show" class="link"><span
+                        style="font-family: FontAwesome;outline-width: 0px">
+                           <span
+                                   ng-if="!bid_show">&#xf067;</span><span
+                        ng-if="bid_show">&#xf068;</span></span>&nbsp;Show Bids
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="padding: 2% 0;"
+             ng-show="projectType==0 && engagementStatus!='DUE' && bid_show">
+            <div class="col-md-12">
+                <form role="form" ng-submit="addBid();" class="h4">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <input ng-model="bid" type="text" placeholder="Add new bid" class="form-control input-lg">
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary btn-lg">Add Bid</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+
+
+        <div class="row" style="padding: 2% 0;"
+             ng-show="projectType==0 && engagementStatus!='DUE' && bid_show">
+            <div class="col-md-12">
+                <table datatable="ng" class="table table-striped table-bordered text-center" style="font-size: 1.5em">
+                    <thead>
+                    <tr>
+                        <th>My Bids</th>
+                        <th>Other Bids</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="x in bids">
+                        <td><span ng-show="x.my.value!=''">&#8377 {{x.my.value}}<br><span  style="font-size: 0.8em">{{x.my.datePosted | date : "medium" : "0530"}}</span></span></td>
+                        <td><span ng-show="x.other.value!=''">&#8377 {{x.other.value}}<br><span  style="font-size: 0.8em">{{x.other.datePosted | date : "medium" :"0530"}}</span></span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+        <!-- Discussuions -->
+        <div ng-show="engagementStatus!='DUE'">
+
+        <div class="row" style="padding-top: 30px">
+            <div class="col-md-12 direction-row-row-center-column-between"
+                 style="height: 70px;background-color:#E1E1E1;font-size: 30px;font-family: Avenir-Medium">
+                <div><span  style="font-family: FontAwesome;outline-width: 0px"
+                           >Discussions</span>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row"  style="padding-top: 40px;padding-bottom: 40px">
+            <div class="col-md-12">
+                <form role="form" ng-submit="addThread();" style="font-size: 20px;font-family: Avenir-Lightt">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <input ng-model="add_name" type="text" placeholder="Add new thread"
+                                   class="form-control input-lg rounded" style="height: 60px">
+                        </div>
+                        <div class="col-md-3" style="font-size: 20px">
+                            <button type="submit" class="btn btn-primary   rounded"
+                                    style="width:200px;height:60px;font-family: Avenir-Light">Add Thread
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row" ng-repeat="thread in threads" style="padding-bottom: 10px;">
+            <div class="col-md-12">
+
+                <div class="box box-primary box-solid direct-chat direct-chat-primary">
+                    <div class="box-header">
+                        <h3 class="box-title">{{thread.name}}</h3>
+
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body" style="display: block;">
+                        <!-- Conversations are loaded here -->
+                        <div class="direct-chat-messages">
+                            <!-- Message. Default to the left -->
+                            <div ng-if="messages[$index].length==0">No chats</div>
+                            <div class="direct-chat-msg" ng-repeat="message in messages[$index]"
+                                 ng-class="{right:message.postedByType=='customer'}">
+                                <div class="direct-chat-info clearfix">
+                                    <span class="direct-chat-name pull-right" ng-if="message.postedByType=='customer'">{{custName}}</span>
+                                    <span class="direct-chat-name" ng-if="message.postedByType=='sp'">{{spName}}</span>
+
+                                    <span class="direct-chat-timestamp"
+                                          ng-class="{'pull-right':message.postedByType=='sp'}">{{message.datePosted | date:short}}</span>
+                                </div>
+                                <!-- /.direct-chat-info -->
+                                <img class="direct-chat-img" ng-src="{{cust_img}}" alt="message user image"
+                                     ng-if="message.postedByType=='customer'">
+                                <img class="direct-chat-img" ng-src="{{sp_img}}" alt="message user image"
+                                     ng-if="message.postedByType=='sp'"><!-- /.direct-chat-img -->
+                                <div class="direct-chat-text">{{message.messageString}}</div>
+                                <!-- /.direct-chat-text -->
+                            </div>
+                            <!-- /.direct-chat-msg -->
+
+                            <!-- Message to the right -->
+
+                        </div>
+                        <!--/.direct-chat-messages-->
+
+                        <!-- Contacts are loaded here -->
+
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer" style="display: block;">
+                        <form ng-submit="sendMessage(thread.id,send_message[$index],$index);">
+                            <div class="input-group">
+                                <input type="text" name="message" placeholder="Type Message ..." class="form-control"
+                                       ng-model="send_message[$index]">
+              <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary btn-flat">Send</button>
+              </span>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.box-footer-->
+                </div>
+
+
+            </div>
+        </div>
+            </div>
+
+
+    </div>
+
+</div>

@@ -1,0 +1,177 @@
+<div>
+    <div id="ratingModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content" style="padding: 50px 50px; ">
+                <div class="modal-header">
+                    <button type="button" class="close mdl-btn "  ng-click="closePopup('ratingModal');" >&times;</button>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="modal-title text-left" style="font-size: 36px;font-family: Avenir-Medium">GIVE YOUR FEEDBACK</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <form role="form" ng-submit="submitRating();" style="font-family: Avenir-Light">
+                        <div class="form-group">
+                            <label style="font-size: 20px;font-family: Avenir-Book">Rating</label>
+                            <div><rating ng-model="rating" max="5" readonly="false" on-hover="" on-leave="" style="font-size: 25px;outline-width: 0;"></rating></div>
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size: 20px;font-family: Avenir-Book">Review</label>
+                            <textarea class="form-control input-lg" placeholder="Enter review" rows="5" ng-model="review" ng-focus="rating_error=0" ng-change="rating_error=0" style="resize: none"></textarea>
+                        </div>
+                        <div class="form-group" ng-if="error">
+                            <p class="h5" style="color: red">{{error_message}}</p>
+                        </div>
+                        <div class="form-group" ng-if="success">
+                            <p class="h5" style="color: #808080">Your rating successfully submitted</p>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-large btn-primary btn-block input-lg" type="submit">SUBMIT</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="container" ng-show="error==4" style="padding-top: 97px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group" style="padding-bottom: 50px">
+                    <label style="color: red;font-size: 30px;font-family:Avenir-Book;">{{error_message}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" ng-show="set">
+
+
+        <div class="row" style="padding-top: 97px">
+            <div class="col-md-12 direction-row-row-center-column-between" style="height: 70px;background-color:#E1E1E1;font-size: 30px;font-family: Avenir-Medium">
+                <div>Current Projects</div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="ongoing.length==0" style="padding-top: 40px" >
+            <div class="col-md-12 direction-row-row-center-column-center">
+                <div style="font-size: 20px">No Current Projects</div>
+            </div>
+        </div>
+
+        <div class="row"  ng-show="ongoing.length!=0"  >
+            <div class="col-md-6" ng-repeat="project in ongoing" ng-show="$index<limit.ongoing" style="padding: 50px 0;">
+                <div class="row">
+                    <div class="col-md-4 direction-column-row-center-column-between" style="width:200px;height: 260px">
+                        <img src="assets/default.png" height="170px" width="170px"  class="img-rounded" ng-show="project.imageLoaded==0">
+                        <img ng-src="{{project.engagementsData[0].spImage}}" height="170px" width="170px"  class="img-rounded" imageonload="project.imageLoaded=1;" ng-show="project.imageLoaded==1">
+                        <div class="direction-row-row-center-column-center" style="padding: 0 25px;height:52px;width:170px;border: 2px solid #000000; border-radius:20px;font-family: Avenir-Light;font-size: 20px " >{{project.currencySymbol}}{{project.engagementsData[0].latestPrice.toFixed(0)}}</div>
+
+                    </div>
+                    <div class="col-md-8" style="padding-left:15px;padding-right: 35px">
+                        <div class="row">
+                            <div class="col-md-12" style="font-size: 30px">
+                                {{project.subCategoryName}}
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top: 20px">
+                            <div class="col-md-12" style="font-size: 20px;">
+                                <div>{{project.engagementsData[0].firstName}} {{project.engagementsData[0].lastName}}</div>
+                                <i class="fa fa-star" ng-repeat="x in project.full" style="padding-right: 2px"></i>
+                                <i class="fa fa-star-half-o" ng-repeat="x in project.half" style="padding-right: 2px"></i>
+                                <i class="fa fa-star-o" ng-repeat="x in project.empty" style="padding-right: 2px"></i>
+                                <span>({{project.engagementsData[0].noOfRatings}})</span>
+                            </div>
+                        </div>
+
+                        <div class="row" style="padding-top: 30px;font-size: 20px">
+                            <div class="col-md-12 wordwrap">Start Date  : {{project.projectCreatedDateTime | date:medium}}</div>
+                        </div>
+
+                        <div class="row" style="padding-top: 32px">
+                            <div class="col-md-12 direction-row-row-center-column-left" style="height: 50px;font-size: 25px;">
+                                <button type="button" class="btn btn-primary btn-block rounded"  style="width:170px;height:50px;margin-right: 25px;font-family:Avenir-Light;" ui-sref="CP.viewEngagement({projectId:project._id,engId:project.engagementsData[0]._id,ancestor:'fromProject'})">View</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row" ng-show="ongoing.length>4" style="padding-top: 40px" >
+            <div class="col-md-12 direction-row-row-center-column-center">
+                <div class="link" style="font-size: 20px" ng-if="limit.ongoing==4" ng-click="limit.ongoing=ongoing.length">View More <img src="assets/open_arrow_btn.png"></div>
+                <div class="link" style="font-size: 20px" ng-if="limit.ongoing==ongoing.length" ng-click="limit.ongoing=4">View Less <img src="assets/close_arrow_btn.png"></div>
+            </div>
+        </div>
+
+        <div class="row" style="padding-top: 97px">
+            <div class="col-md-12 direction-row-row-center-column-between" style="height: 70px;background-color:#E1E1E1;font-size: 30px;font-family: Avenir-Medium">
+                <div>Completed Projects</div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="completed.length==0" style="padding: 40px 0px" >
+            <div class="col-md-12 direction-row-row-center-column-center">
+                <div style="font-size: 20px">No Completed Projects</div>
+            </div>
+        </div>
+
+        <div class="row"  ng-show="completed.length!=0"  >
+            <div class="col-md-6" ng-repeat="project in completed" ng-show="$index<limit.completed" style="padding: 50px 0;">
+                <div class="row">
+                    <div class="col-md-4 direction-column-row-center-column-between" style="width:200px;height: 260px">
+
+                        <img src="assets/default.png" height="170px" width="170px"  class="img-rounded" ng-show="project.imageLoaded==0">
+                        <img ng-src="{{project.engagementsData[0].spImage}}" height="170px" width="170px"  class="img-rounded" imageonload="project.imageLoaded=1;" ng-show="project.imageLoaded==1">
+                        <div class="direction-row-row-center-column-center" style="padding: 0 25px;height:52px;width:170px;border: 2px solid #000000; border-radius:20px;font-family: Avenir-Light;font-size: 20px " >{{project.currencySymbol}}{{project.engagementsData[0].latestPrice.toFixed(0)}}</div>
+
+                    </div>
+                    <div class="col-md-8" style="padding-left:15px;padding-right: 35px">
+                        <div class="row">
+                            <div class="col-md-12" style="font-size: 30px">
+                                {{project.subCategoryName}}
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top: 20px">
+                            <div class="col-md-12" style="font-size: 20px;">
+                                <div>{{project.engagementsData[0].firstName}} {{project.engagementsData[0].lastName}}</div>
+                                <i class="fa fa-star" ng-repeat="x in project.full" style="padding-right: 2px"></i>
+                                <i class="fa fa-star-half-o" ng-repeat="x in project.half" style="padding-right: 2px"></i>
+                                <i class="fa fa-star-o" ng-repeat="x in project.empty" style="padding-right: 2px"></i>
+                                <span>({{project.engagementsData[0].noOfRatings}})</span>
+                            </div>
+                        </div>
+
+                        <div class="row" style="padding-top: 30px;font-size: 20px">
+                            <div class="col-md-12 wordwrap">Completion Date  : {{project.projectCompletedDateTime |date : medium }}</div>
+                        </div>
+
+                        <div class="row" style="padding-top: 32px">
+                            <div class="col-md-12 direction-row-row-center-column-left" style="height: 50px;font-size: 25px;">
+                                <button ng-if="project.isRatingGiven==0" type="button" class="btn btn-primary btn-block rounded"  style="width:170px;height:50px;margin-right: 25px;font-family:Avenir-Light;" ng-click="openPopup('ratingModal',project._id);">Rate</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row" ng-show="completed.length>4" style="padding: 40px 0px" >
+            <div class="col-md-12 direction-row-row-center-column-center">
+                <div class="link" style="font-size: 20px" ng-if="limit.completed==4" ng-click="limit.completed=completed.length">View More <img src="assets/open_arrow_btn.png"></div>
+                <div class="link" style="font-size: 20px" ng-if="limit.completed==completed.length" ng-click="limit.completed=4" >View Less <img src="assets/close_arrow_btn.png"></div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>

@@ -1,0 +1,105 @@
+<div>
+
+    <div class="container" ng-show="error==4" style="padding-top: 97px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group" style="padding-bottom: 50px">
+                    <label style="color: red;font-size: 30px;font-family:Avenir-Book;">{{error_message}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" ng-show="set">
+
+        <div class="row" style="padding-top:97px ">
+            <div class="col-md-12">
+                <p style="font-size: 48px;font-family: Avenir-Medium">Edit Profile</p>
+            </div>
+        </div>
+
+        <div class="row" style="padding:100px 0">
+            <div class="col-md-8 col-md-offset-2">
+                <form role="form" ng-submit="submitForm();"  style="font-size: 20px">
+
+                    <div class="form-group"   style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label  style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">First Name</label>
+                        <input type="text" class="form-control input-lg rounded" ng-model="firstName" readonly  style="height: 60px">
+                    </div>
+
+                    <div class="form-group"   style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label  style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">Last Name</label>
+                        <input type="text" class="form-control input-lg rounded" ng-model="lastName" readonly style="height: 60px">
+                    </div>
+
+                    <div class="form-group"   style="padding-bottom: 30px;font-family: Avenir-Light">
+                        <label  style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">Email</label>
+                        <input type="text" class="form-control input-lg rounded" ng-model="email" readonly style="height: 60px">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group" style="padding-bottom: 30px;font-family: Avenir-Light">
+                                <label style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">Prefix</label>
+                                <input type="text" class="form-control input-lg rounded" ng-model="prefix" ng-value="+1" style="height: 60px"  readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-9">
+                            <div class="form-group" style="padding-bottom: 30px;font-family: Avenir-Light">
+                                <label style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">Phone Number</label>
+                                <input type="text" class="form-control input-lg rounded" ng-model="phone"  style="height: 60px"  ng-focus="error=0;phone_changed=1;" ui-mask="999-999-9999" ui-mask-placeholder>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="padding-bottom: 30px">
+                        <div class="col-md-4 direction-column-row-center-column-between" style="width:200px;height: 200px">
+
+                            <img ng-src="{{cust_image}}" height="170px" width="170px"  class="img-rounded" ng-show="!pic_selected">
+                            <img src="assets/default.png" height="170px" width="170px"  class="img-rounded" ng-show="pic_selected" id="dsp">
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="form-group" style="padding-top: 68px;font-family: Avenir-Light">
+                                <label style="font-size: 20px;font-family: Avenir-Book;padding-bottom: 20px">Profile Picture</label>
+                                <input id="f" type="file" class="form-control input-lg rounded" onchange="angular.element(this).scope().updateFileObject(this.files)">
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group" ng-show="error" style="padding-bottom: 50px">
+                        <label style="color: red;font-size: 15px;font-family:Avenir-Book;">{{error_message}}</label>
+                    </div>
+                    <div class="form-group" ng-show="success" style="padding-bottom: 50px">
+                        <label style="color: #808080;font-size: 30px;font-family:Avenir-Book;">Success</label><br>
+                    </div>
+
+
+
+
+                    <button type="submit" class="btn btn-primary rounded"  style="width:200px;height:50px;font-family: Avenir-Light">Submit</button>
+
+                </form>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+</div>

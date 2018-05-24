@@ -1,0 +1,91 @@
+<div>
+
+
+
+
+    <div class="container" ng-show="error==4" style="padding-top: 97px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group" style="padding-bottom: 50px">
+                    <label style="color: red;font-size: 30px;font-family:Avenir-Book;">{{error_message}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" ng-show="set">
+        <div class="row" style="padding-top: 97px;">
+            <div class="col-md-12">
+                <p style="font-size: 48px;font-family: Avenir-Medium">Service Providers</p>
+            </div>
+        </div>
+
+        <div class="row" ng-show="splist.length==0" style="padding-top: 110px" >
+            <div class="col-md-12 direction-row-row-center-column-center">
+                <div style="font-size: 30px">No Service Providers for your selected location</div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="splist.length!=0" style="padding-top: 110px" >
+            <div class="col-md-6" ng-repeat="sp in splist" style="padding: 50px 0;">
+                <div class="row">
+                    <div class="col-md-4 direction-column-row-center-column-between" style="width:200px;height: 260px">
+
+                        <img src="assets/default.png" height="170px" width="170px"  class="img-rounded" ng-show="sp.imageLoaded==0">
+                        <img ng-src="{{sp.spImage}}" height="170px" width="170px"  class="img-rounded" imageonload="sp.imageLoaded=1;" ng-show="sp.imageLoaded==1">
+
+
+                        <button type="button" class="btn btn-primary btn-block rounded"  style="width:170px;height:50px;font-family:Avenir-Light;" ng-click="goSPDetail(sp._id);">View</button>
+                    </div>
+                    <div class="col-md-8" style="padding-left:15px;padding-right: 35px">
+                        <div class="row">
+                            <div class="col-md-10" style="font-size: 30px"  ng-click="goSPDetail(sp._id);" >
+                                {{sp.firstName}} {{sp.lastName}}
+                            </div>
+                            <div class="col-md-2">
+                                <label><input type="checkbox" class="big-checkbox"  ng-click="toggleCheckbox(sp._id)" ng-checked="isSPIdPresent(sp._id);"   ng-focus="removeErr()" ></label>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top: 20px">
+                            <div class="col-md-12" style="font-size: 20px">
+                                <i class="fa fa-star" ng-repeat="x in sp.full" style="padding-right: 2px"></i>
+                                <i class="fa fa-star-half-o" ng-repeat="x in sp.half" style="padding-right: 2px"></i>
+                                <i class="fa fa-star-o" ng-repeat="x in sp.empty" style="padding-right: 2px"></i>
+                                <span>({{sp.noOfRatings}})</span>
+                            </div>
+                        </div>
+
+                        <div class="row" style="padding-top: 30px;font-size: 17px">
+                            <div class="col-md-12 wordwrap">Description : {{sp.profession[0].description}}</div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <div class="row" style="padding-top: 50px">
+            <div class="col-md-12">
+                <div class="form-group" ng-show="error" style="padding-bottom: 50px">
+                    <label style="color: red;font-size: 15px;font-family:Avenir-Book;">{{error_message}}</label>
+                </div>
+                <div class="form-group" ng-show="ongoing" style="padding-bottom: 50px">
+                    <label style="color: #808080;font-size: 30px;font-family:Avenir-Book;" ng-show="success" >Success</label><br>
+                    <img ng-src="assets/spinner.gif" height="170px" width="170px"  >
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="padding: 50px 0;" ng-show="splist.length!=0">
+            <div class="direction-row-row-center-column-center">
+                <button type="button" class="btn btn-primary btn-block rounded"  style="width:300px;height:50px;font-family:Avenir-Light;margin-right: 50px" ng-click="submitProposal();"  ng-disabled="success || spids.length < 1" >Request For Proposal</button>
+
+                <button type="button" class="btn btn-primary btn-block rounded"  style="width:300px;height:50px;font-family:Avenir-Light;margin-right: 50px" ng-click="submitAuction();"  ng-disabled="success || spids.length < 2" >Invite To Auction</button>
+            </div>
+        </div>
+    </div>
+
+</div>

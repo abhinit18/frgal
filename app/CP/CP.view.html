@@ -1,0 +1,26 @@
+<div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 direction-row-row-center-column-right" style="height: 100px;font-size: 20px;">
+                <div class="direction-row-row-center-column-right link" style="padding: 0 50px;height:52px;"  ui-sref="CP.viewProfile">Welcome {{getCookie('cust_fname')}}</div>
+                <div class="direction-row-row-center-column-right link" style="padding: 0 50px;height:52px;border: 2px solid #000000; border-radius:20px " ng-click = "submitLogout();">LOGOUT</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="common2">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 direction-row-row-center-column-left" style="height: 100px;font-size: 20px;">
+                    <div class="link" ng-class="{active:$parent.getCurrentPath().match('serviceForm') || $parent.getCurrentPath().match('SPsList') || $parent.getCurrentPath().match('auctionForm') || $parent.getCurrentPath().match('fromList')}" style="padding-right:50px;" ui-sref="welcomeScreen"> BROWSE SERVICES</div>
+                    <div class="link" ng-class="{active:$parent.getCurrentPath().match('myRequests') || $parent.getCurrentPath().match('viewRequest') || $parent.getCurrentPath().match('fromRequest')}"style="padding: 0 50px;" ui-sref="CP.myRequests">MY REQUESTS</div>
+                    <div class="link" ng-class="{active:$parent.getCurrentPath().match('myProjects')|| $parent.getCurrentPath().match('fromProject')}" style="padding: 0 50px;" ui-sref="CP.myProjects">MY PROJECTS</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ui-view></div>
+</div>

@@ -1,0 +1,142 @@
+<div>
+
+
+
+
+    <div class="container" ng-show="error==4" style="padding-top: 97px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group" style="padding-bottom: 50px">
+                    <label style="color: red;font-size: 30px;font-family:Avenir-Book;">{{error_message}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" ng-show="set">
+        <div class="row" style="padding-top: 97px;">
+            <div class="col-md-12">
+                <p style="font-size: 48px;font-family: Avenir-Medium">{{requestData.subCategoryName}}</p>
+            </div>
+        </div>
+
+
+
+        <div class="row" style="padding-top: 50px">
+            <div class="col-md-12 direction-row-row-center-column-between" style="height: 70px;background-color:#E1E1E1;font-size: 30px;font-family: Avenir-Medium">
+                <div>Service Providers Responded</div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="submitted.length==0" style="padding-top: 40px" >
+            <div class="col-md-12 direction-row-row-center-column-center">
+                <div style="font-size: 20px">No Service Providers</div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="submitted.length!=0">
+            <div class="col-md-6" ng-repeat="engagement in submitted" style="padding: 50px 0;">
+                <div class="row">
+                    <div class="col-md-4 direction-column-row-center-column-between" style="width:200px;height: 260px">
+
+                        <img src="assets/default.png" height="170px" width="170px"  class="img-rounded" ng-show="engagement.imageLoaded==0">
+                        <img ng-src="{{engagement.spImage}}" height="170px" width="170px"  class="img-rounded" imageonload="engagement.imageLoaded=1;" ng-show="engagement.imageLoaded==1">
+                        <div class="direction-row-row-center-column-center" style="padding: 0 25px;height:52px;width:170px;border: 2px solid #000000; border-radius:20px;font-family: Avenir-Light;font-size: 20px " >{{requestData.currencySymbol}}{{engagement.latestPrice.toFixed(0)}}</div>
+
+                    </div>
+                    <div class="col-md-8" style="padding-left:15px;padding-right: 35px">
+                        <div class="row">
+                            <div class="col-md-12" style="font-size: 30px">
+                                {{engagement.firstName}} {{engagement.lastName}}
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top: 20px">
+                            <div class="col-md-12" style="font-size: 20px">
+                                <i class="fa fa-star" ng-repeat="x in engagement.full" style="padding-right: 2px"></i>
+                                <i class="fa fa-star-half-o" ng-repeat="x in engagement.half" style="padding-right: 2px"></i>
+                                <i class="fa fa-star-o" ng-repeat="x in engagement.empty" style="padding-right: 2px"></i>
+                                <span>({{engagement.noOfRatings}})</span>
+                            </div>
+                        </div>
+
+                        <div class="row" style="padding-top: 30px;font-size: 17px">
+                            <div class="col-md-12 wordwrap">Contact : {{engagement.phoneNumberPrefix}}-{{engagement.phoneNumber.substring(2)}}</div>
+                        </div>
+
+                        <div class="row" style="padding-top: 65px">
+                            <div class="col-md-12 direction-row-row-center-column-center" style="height: 50px;font-size: 25px;">
+                                <button type="button" class="btn btn-primary btn-block rounded"  style="width:170px;height:50px;margin-right: 25px;font-family:Avenir-Light;" ui-sref="CP.viewEngagement({projectId:requestData._id,engId:engagement._id,ancestor:'fromRequest'})">View</button>
+                                <button type="button" class="btn btn-primary btn-block rounded"  style="width:170px;height:50px;font-family:Avenir-Light;" ng-click="engage(requestData._id,engagement.spId);">Engage</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group" ng-show="error==engagement.spId" style="padding-top: 30px">
+                    <label style="color: red;font-size: 15px;font-family:Avenir-Book;">{{error_message}}</label>
+                </div>
+                <div class="form-group" ng-show="success==engagement.spId" style="padding-top: 30px">
+                    <label style="color: #808080;font-size: 30px;font-family:Avenir-Book;">Success</label><br>
+                    <label style="color: #808080;font-size: 15px;font-family:Avenir-Book;">You will be redirected My Projects page in 5 seconds..</label>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row" style="padding-top: 97px">
+            <div class="col-md-12 direction-row-row-center-column-between" style="height: 70px;background-color:#E1E1E1;font-size: 30px;font-family: Avenir-Medium">
+                <div>Service Providers Due</div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="due.length==0" style="padding: 40px 0" >
+            <div class="col-md-12 direction-row-row-center-column-center">
+                <div style="font-size: 20px">No Service Providers</div>
+            </div>
+        </div>
+        <div class="row"  ng-show="due.length!=0"  >
+            <div class="col-md-6" ng-repeat="engagement in due" style="padding: 50px 0;">
+                <div class="row">
+                    <div class="col-md-4 direction-column-row-center-column-between" style="width:200px;height: 200px">
+
+                        <img src="assets/default.png" height="170px" width="170px"  class="img-rounded" ng-show="engagement.imageLoaded==0">
+                        <img ng-src="{{engagement.spImage}}" height="170px" width="170px"  class="img-rounded" imageonload="engagement.imageLoaded=1;" ng-show="engagement.imageLoaded==1">
+                        <div class="direction-row-row-center-column-center" style="padding: 0 25px;height:52px;width:170px;border: 2px solid #000000; border-radius:20px;font-family: Avenir-Light;font-size: 20px "  ng-hide="1==1">{{requestData.currencySymbol}}{{engagement.latestPrice.toFixed(0)}}</div>
+
+                    </div>
+                    <div class="col-md-8" style="padding-left:15px;padding-right: 35px">
+                        <div class="row">
+                            <div class="col-md-12" style="font-size: 30px">
+                                {{engagement.firstName}} {{engagement.lastName}}
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top: 20px">
+                            <div class="col-md-12" style="font-size: 20px">
+                                <i class="fa fa-star" ng-repeat="x in engagement.full" style="padding-right: 2px"></i>
+                                <i class="fa fa-star-half-o" ng-repeat="x in engagement.half" style="padding-right: 2px"></i>
+                                <i class="fa fa-star-o" ng-repeat="x in engagement.empty" style="padding-right: 2px"></i>
+                                <span>({{engagement.noOfRatings}})</span>
+                            </div>
+                        </div>
+
+                        <div class="row" style="padding-top: 30px;font-size: 17px">
+                            <div class="col-md-12 wordwrap" ng-hide="1==1">Contact : {{engagement.phoneNumberPrefix}}-{{engagement.phoneNumber.substring(2)}}</div>
+                        </div>
+
+                        <div class="row" style="padding-top: 65px">
+                            <div class="col-md-12 direction-row-row-center-column-center" style="height: 50px;font-size: 25px;">
+                                <button type="button" class="btn btn-primary btn-block rounded"  style="width:170px;height:50px;margin-right: 25px;font-family:Avenir-Light;" disabled ng-hide="1==1">View</button>
+                                <button type="button" class="btn btn-primary btn-block rounded"  style="width:170px;height:50px;font-family:Avenir-Light;" disabled ng-hide="1==1">Engage</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
